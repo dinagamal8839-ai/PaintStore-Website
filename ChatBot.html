@@ -71,7 +71,7 @@
 
       .chat-messages-container {
         flex-grow: 1;
-        margin-top: 20px;
+        margin-top: 80px;
         overflow: scroll;
         scrollbar-width: none;
 
@@ -88,7 +88,7 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function ChatInput({ chatMessages, setChatMessages }) {
+      function ChatInput({ chatMessages, setChatMessages, isTop }) {
         const [inputText, setInputText] = React.useState('');
 
         function saveInputText(event) {
@@ -121,7 +121,17 @@
         }
 
         return (
-          <div className="chat-input-container">
+          <div className="chat-input-container" style={{
+                position: 'fixed',
+                top: isTop ? '10px' : 'auto',
+                bottom: isTop ? 'auto' : '10px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '600px'
+              }}>
+             
+              
+                
             <input
               placeholder="Send a message to Chatbot"
               size="30"
@@ -138,20 +148,7 @@
       }
 
       function ChatMessage({ message, sender }) {
-        // const message = props.message;
-        // const sender = props.sender;
-        // const { message, sender } = props;
-
-        /*
-        if (sender === 'robot') {
-          return (
-            <div>
-              <img src="robot.png" width="50" />
-              {message}
-            </div>
-          );
-        }
-        */
+       
 
         return (
           <div className={
@@ -215,18 +212,40 @@
           sender: 'robot',
           id: 'id4'
         }]);
-        // const [chatMessages, setChatMessages] = array;
-        // const chatMessages = array[0];
-        // const setChatMessages = array[1];
+          const [isTop, setIsTop] = React.useState(false);
 
+        function togglePosition() {
+         setIsTop(!isTop);
+         }
+         
         return (
           <div className="app-container">
+            <p
+              onClick={togglePosition}
+              style={{
+            position: 'fixed',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bottom: '0px',  
+            cursor: 'pointer',
+            padding: '8px 12px',
+            backgroundColor: 'lightblue',
+            color: 'black',
+            borderRadius: '10px',
+           
+              }}
+            >
+              Flip Input Position
+            </p>
+
             <ChatMessages
               chatMessages={chatMessages}
             />
+
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
+              isTop={isTop}
             />
           </div>
         );
